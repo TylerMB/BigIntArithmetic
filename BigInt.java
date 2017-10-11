@@ -16,19 +16,21 @@ public class BigInt {
 
 
     public boolean isEqualTo(String s) {
-        if !(d.charAt(0).isEqual(s.charAt(0))) {
+        if !(stringValue.charAt(0).isEqual(s.charAt(0))) {
                 return false;
                 else {
                     // either both +ve or -ve
-                    if (d.length() != s.length()) {
+                    if (stringValue.length() != s.length()) {
                         return false;
-                    } else 
-                    
-
-        }
-
-        
-    }
+                    }
+                    for (int i = 0; i < d.length(); i++) {
+                        if (stringValue.charAt(i) != s.charAt(i)) {
+                            return false;
+                     
+                        }
+                    }
+                    return true;
+                }
     
     
 
