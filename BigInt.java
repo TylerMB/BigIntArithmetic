@@ -5,35 +5,85 @@ public class BigInt {
     
     
     public BigInt(String input) {
-        this.stringValue = input;
+        this.stringVal = input;
 
     }
 
     public String toString() {
-        return stringValue;
+        return stringVal;
     }
 
 
 
-    public boolean isEqualTo(String s) {
-        if !(stringValue.charAt(0).isEqual(s.charAt(0))) {
+    public boolean isEqualTo(BigInt s) {
+        if (!(stringVal.charAt(0) == (s.stringVal.charAt(0)))) {
+            return false;
+        } else {
+            // either both +ve or -ve
+            if (stringVal.length() != s.stringVal.length()) {
                 return false;
-                else {
-                    // either both +ve or -ve
-                    if (stringValue.length() != s.length()) {
+            }
+            for (int i = 0; i < stringVal.length(); i++) {
+                if (stringVal.charAt(i) != s.stringVal.charAt(i)) {
+                    return false;
+                     
+                }
+            }
+            return true;
+        }
+
+    }
+
+    public boolean isGreaterThan(BigInt s) {        
+        if (stringVal.charAt(0) == '-' && s.stringVal.charAt(0) != '-') {
+            return false;
+        } else if (stringVal.charAt(0) != '-' && s.stringVal.charAt(0) == '-') {
+            return true;
+        } else {
+            // Both are either +ve or -ve
+            if (stringVal.length() > s.stringVal.length()) {
+                return true;
+            } else if (stringVal.length() < s.stringVal.length()) {
+                return false;
+            } else {
+                for (int i = 0; i < stringVal.length();i++) {
+                    if (stringVal.charAt(i) < s.stringVal.charAt(i)) {
                         return false;
                     }
-                    for (int i = 0; i < d.length(); i++) {
-                        if (stringValue.charAt(i) != s.charAt(i)) {
-                            return false;
-                     
-                        }
+                    if (stringVal.charAt(i) != s.stringVal.charAt(i)) {
+                        return true;
                     }
-                    return true;
                 }
-    
-    
+                return false;
+            }
+        }
+    }
 
+    public boolean isLessThan(BigInt s) {        
+        if (stringVal.charAt(0) == '-' && s.stringVal.charAt(0) != '-') {
+            return true;
+        } else if (stringVal.charAt(0) != '-' && s.stringVal.charAt(0) == '-') {
+            return false;
+        } else {
+            // Both are either +ve or -ve
+            if (stringVal.length() < s.stringVal.length()) {
+                return true;
+            } else if (stringVal.length() > s.stringVal.length()) {
+                return false;
+            } else {
+                for (int i = 0; i < stringVal.length();i++) {
+                    if (stringVal.charAt(i) > s.stringVal.charAt(i)) {
+                        return false;
+                    }
+                    if (stringVal.charAt(i) != s.stringVal.charAt(i)) {
+                        return true;
+                    }
+                }
+                return false;
+            }
+        }
+    }
+                
 
 
 }
