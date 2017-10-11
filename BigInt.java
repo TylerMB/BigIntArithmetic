@@ -1,16 +1,18 @@
 
 public class BigInt {
     public String stringVal;
+    public String printVal;
     public String remainder;
     
     
     public BigInt(String input) {
-        this.stringVal = input;
+        this.printVal = input;
+        this.stringVal = input; // if need to get rid of 0s at beginning do here
 
     }
 
     public String toString() {
-        return stringVal;
+        return printVal;
     }
 
 
@@ -82,6 +84,35 @@ public class BigInt {
                 return false;
             }
         }
+    }
+
+
+    public void add(BigInt s) {
+        String result = "";
+        boolean over = false;
+        int indexOne = stringValue.length()-1;
+        
+        if (stringVal.length() < s.stringVal.length()) {
+            int dif = s.stringValue.length() - stringVal.length();
+            for (int i = indexOne; i >= 0; i--) {
+                int x = Character.getNumericValue(s.stringValue.charAt(i+dif));
+                int y = Character.getNumericValue(stringValue.charAt(i));
+                int z = x+y;
+                if (over) z++;
+                over = false;
+                if (z > 9) over = true;
+
+                String number =  Integer.toString(z);
+                result = number.substring(number.length()-1) + result;
+            }
+            int i = (s.stringVal.length() - stringVal.length());
+            if (i == 0 && over) {
+                result = "1" + result;
+                return;
+            
+        }
+    
+        
     }
                 
 
