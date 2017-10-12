@@ -44,5 +44,9 @@ public class Test {
         System.out.println("\nSubtraction Testing... \n");
         
         System.out.println("Should be 9000: " + gThan4.subtract(gThan1));
+        System.out.println("Should be equal 0: " + gThan1.subtract(gThan1));
+        System.out.println("Should be revers -9000: " + gThan1.subtract(gThan4));
+
+        
     }
 }

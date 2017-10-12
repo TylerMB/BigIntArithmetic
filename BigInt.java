@@ -33,7 +33,10 @@ public class BigInt {
         } else {
             this.negative = false;
         }
-        while(input.charAt(0) == '0' && input.length() > 0){
+        if(input.charAt(0) == '0' && input.length() == 1){
+            this.printVal = "0";
+
+        }else while(input.charAt(0) == '0' && input.length() > 0){
             input.substring(1);
         }
         for(int i = 0; i < input.length();i++){
@@ -151,8 +154,8 @@ public class BigInt {
         BigInt second = new BigInt(s.stringVal);
         BigInt result;
         
-        System.out.println(first);
-        System.out.println(second);
+        //System.out.println(first);
+        //System.out.println(second);
         
         
         if(first.negative && second.negative){
@@ -177,15 +180,11 @@ public class BigInt {
             return first.add(second);
         }
         
-        if(first.number.size() == second.number.size()){
-        
-            
-            
+        if(first.isGreaterThan(second)){
+
             int fi = first.number.size()-1;
             int si = second.number.size()-1;
             String newString = "";
-            
-            System.out.println("here");
             
             while(si > 0){
                 int newNum = 0;
@@ -196,19 +195,14 @@ public class BigInt {
                     val = val-1;
                     first.number.set(fi-1,val);
                     newString = String.valueOf(newNum) + newString;
-                    System.out.println(newString);
+                    //System.out.println(newString);
                 } else if (first.number.get(fi) >= second.number.get(si)){
                     newNum = first.number.get(fi) - second.number.get(si);
                     newString = String.valueOf(newNum) + newString;
-                    System.out.println(newString);
                 }
                 si--;
                 fi--;
             }
-            
-            System.out.println(newString);
-
-            
             while(fi > 1){
                 if(first.number.get(fi) < 0){
                     Integer val = first.number.get(fi-1);
@@ -220,8 +214,22 @@ public class BigInt {
                 }
                 fi--;
             }
-            
             result = new BigInt(newString);
+            return result;
+        }
+        
+        if(first.isLessThan(second)){
+            //System.out.println("Should be revers -9000");
+            result = second.subtract(first);
+            result.negative = true;
+            result.stringVal = "-" + result.stringVal;
+            return result;
+        
+        }
+        
+        if(first.isEqualTo(second)){
+            //System.out.println("Should be equal 0");
+            result = new BigInt("0");
             return result;
         }
         return null;
