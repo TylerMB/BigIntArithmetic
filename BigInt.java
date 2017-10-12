@@ -5,16 +5,43 @@ public class BigInt {
     public String stringVal;
     public String printVal;
     public String remainder;
+    public ArrayList<Integer> number;
+    public boolean negative;
     
     public BigInt(String input) {
         this.printVal = input;
         this.stringVal = input; // if need to get rid of 0s at beginning do here
-        
+        this.number = new ArrayList<Integer>();
+        convert(input);
     }
     
     public String toString() {
-        return printVal;
+        return stringVal;
     }
+    
+    public BigInt() {
+        this.printVal = "";
+        this.stringVal = ""; // if need to get rid of 0s at beginning do here
+        this.number = new ArrayList<Integer>();
+    }
+    
+    
+    public void convert(String input){
+        if(input.charAt(0) == '-'){
+            this.negative = true;
+            input = input.substring(1);
+        } else {
+            this.negative = false;
+        }
+        while(input.charAt(0) == '0' && input.length() > 0){
+            input.substring(1);
+        }
+        for(int i = 0; i < input.length();i++){
+            number.add(Character.getNumericValue(input.charAt(i)));
+        }
+    }
+    
+    
     
     
     
@@ -88,7 +115,7 @@ public class BigInt {
     }
     
     
-    public void add(BigInt s) {
+    public BigInt add(BigInt s) {
         String result = "";
         boolean over = false;
         int indexOne = stringVal.length()-1;
@@ -109,11 +136,121 @@ public class BigInt {
             int i = (s.stringVal.length() - stringVal.length());
             if (i == 0 && over) {
                 result = "1" + result;
-                return;
+                return null;
                 
             }
         }
+        return s;
     }
+    
+    
+    
+    
+    public BigInt subtract(BigInt s){
+        BigInt first = new BigInt(this.stringVal);
+        BigInt second = new BigInt(s.stringVal);
+        BigInt result;
+        
+        System.out.println(first);
+        System.out.println(second);
+        
+        
+        if(first.negative && second.negative){
+            second.negative = false;
+            second.stringVal = second.stringVal.substring(0);
+            result = first.add(second);
+            return result;
+        }
+        
+        if(first.negative && !second.negative){
+            first.negative = false;
+            first.stringVal = first.stringVal.substring(0);
+            result = first.add(second);
+            result.negative = true;
+            result.stringVal = "-" + result.stringVal;
+            return result;
+        }
+        
+        if(!first.negative && second.negative){
+            second.negative = false;
+            second.stringVal = second.stringVal.substring(0);
+            return first.add(second);
+        }
+        
+        if(first.number.size() == second.number.size()){
+        
+            
+            
+            int fi = first.number.size()-1;
+            int si = second.number.size()-1;
+            String newString = "";
+            
+            System.out.println("here");
+            
+            while(si > 0){
+                int newNum = 0;
+                if(first.number.get(fi) < second.number.get(si)){
+                    newNum = first.number.get(fi) + 10;
+                    newNum -= second.number.get(si);
+                    Integer val = first.number.get(fi-1);
+                    val = val-1;
+                    first.number.set(fi-1,val);
+                    newString = String.valueOf(newNum) + newString;
+                    System.out.println(newString);
+                } else if (first.number.get(fi) >= second.number.get(si)){
+                    newNum = first.number.get(fi) - second.number.get(si);
+                    newString = String.valueOf(newNum) + newString;
+                    System.out.println(newString);
+                }
+                si--;
+                fi--;
+            }
+            
+            System.out.println(newString);
+
+            
+            while(fi > 1){
+                if(first.number.get(fi) < 0){
+                    Integer val = first.number.get(fi-1);
+                    val = val-1;
+                    first.number.set(fi-1,val);
+                    val = first.number.get(fi);
+                    val = val+10;
+                    first.number.set(fi,val);
+                }
+                fi--;
+            }
+            
+            result = new BigInt(newString);
+            return result;
+        }
+        return null;
+    }
+
+
+    
+    
+    
+    
+    
+    
+    
+        
+       
+  
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     
     
     public void multiply(BigInt s){

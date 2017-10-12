@@ -39,7 +39,10 @@ public class Test {
         System.out.println("Should be false: " + gThan2.isLessThan(gThan3));
         System.out.println("Should be false: " + gThan4.isLessThan(gThan2));
         System.out.println("Should be true: " + gThan1.isLessThan(gThan4));
-
-
+        
+        //isLessThan testing
+        System.out.println("\nSubtraction Testing... \n");
+        
+        System.out.println("Should be 9000: " + gThan4.subtract(gThan1));
     }
 }
