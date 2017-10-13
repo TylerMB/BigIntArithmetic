@@ -350,23 +350,28 @@ public class BigInt {
             negative = false;
             first.stringVal = stringVal.substring(1);
             second.stringVal = s.stringVal.substring(1);
+            System.out.println("Here1");
         }else if(stringVal.charAt(0) == '-'){
             negative = true;
             first.stringVal = stringVal.substring(1);
+            System.out.println("Here2");
         }else if(s.stringVal.charAt(0) == '-'){
             negative = true;
             second.stringVal = s.stringVal.substring(1);
+            System.out.println("Here3");
         }
         BigInt temp = new BigInt(stringVal);
         while(temp.isGreaterThan(second) || temp.isEqualTo(second)){
             BigInt one = new BigInt("1");
             temp.subtract(second);
             res.add(one);
+            System.out.println("Here4");
         }
         remainder = temp.toString();
         first.stringVal = res.toString();
         if(negative == true){
             stringVal = "-" + stringVal;
+            System.out.println("Here5");
         }
         
         this.remainder = remainder;
