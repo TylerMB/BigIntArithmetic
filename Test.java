@@ -27,6 +27,8 @@ public class Test {
         BigInt gThan3 = new BigInt("-12345");
         BigInt gThan4 = new BigInt("21345");
         BigInt gThan5 = new BigInt("213456");
+        BigInt ten = new BigInt("100");
+        BigInt two = new BigInt("60");
 
         System.out.println("Should be true: " + gThan1.isGreaterThan(gThan2));
         System.out.println("Should be false: " + gThan2.isGreaterThan(gThan3));
@@ -58,6 +60,7 @@ public class Test {
         System.out.println("Should be 24690: " + gThan1.add(gThan1));
         System.out.println("Should be 0: " + gThan1.add(gThan2));
         System.out.println("Should be -24690: " + gThan3.add(gThan2));
+        System.out.println("Should be 160: " + ten.add(two));
         
         
         // Division Testing
@@ -65,7 +68,7 @@ public class Test {
         
         System.out.println("Should be 1: " + gThan1.divideBy(gThan1));
         System.out.println("Should be -1: " + gThan1.divideBy(gThan2));
-        System.out.println(gThan5.divideBy(gThan1));
+        System.out.println("should be 17 remainder 3951:" + gThan5.divideBy(gThan1) +" remainder " + gThan5.divideBy(gThan1).remainder);
         
         //Multiplication testing
         
@@ -75,8 +78,8 @@ public class Test {
         //Greatest Common Diviser
         
         System.out.println("\nGreatest Common Divisor Testing...\n");
-        System.out.println("Should be 15: " + gThan1.greatestCommonDivisor( gThan2));
-                           
+        System.out.println("Should be 20: " + ten.greatestCommonDivisor(two));
+        System.out.println("Should be 20: " + gThan5.greatestCommonDivisor(gThan1));
         
     }
 }
