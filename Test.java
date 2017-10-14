@@ -26,6 +26,7 @@ public class Test {
         BigInt gThan2 = new BigInt("-12345");
         BigInt gThan3 = new BigInt("-12345");
         BigInt gThan4 = new BigInt("21345");
+        BigInt gThan5 = new BigInt("213456");
 
         System.out.println("Should be true: " + gThan1.isGreaterThan(gThan2));
         System.out.println("Should be false: " + gThan2.isGreaterThan(gThan3));
@@ -46,7 +47,7 @@ public class Test {
         System.out.println("Should be 9000: " + gThan4.subtract(gThan1));
         System.out.println("Should be equal 0: " + gThan1.subtract(gThan1));
         System.out.println("Should be revers -9000: " + gThan1.subtract(gThan4));
-        
+        System.out.println("TEST : " + gThan5.subtract(gThan1));
         
         //Addition testing
         
@@ -63,6 +64,8 @@ public class Test {
         System.out.println("\nDivision Testing...\n");
         
         System.out.println("Should be 1: " + gThan1.divideBy(gThan1));
+        System.out.println("Should be -1: " + gThan1.divideBy(gThan2));
+        System.out.println(gThan5.divideBy(gThan1));
         
                            
         

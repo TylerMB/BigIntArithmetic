@@ -360,21 +360,23 @@ public class BigInt {
             second.stringVal = s.stringVal.substring(1);
             System.out.println("Here3");
         }
-        BigInt temp = new BigInt(stringVal);
+        BigInt temp = new BigInt(first.stringVal);
+        System.out.println("Divisor: " + temp.stringVal);
         while(temp.isGreaterThan(second) || temp.isEqualTo(second)){
             BigInt one = new BigInt("1");
-            temp.subtract(second);
-            res.add(one);
-            System.out.println("Here4");
+            temp = temp.subtract(second);
+            System.out.println(res.stringVal);
+            res = res.add(one);
+            System.out.println("Temp: " + temp.stringVal);
         }
         remainder = temp.toString();
         first.stringVal = res.toString();
         if(negative == true){
-            stringVal = "-" + stringVal;
+            res.stringVal = "-" + res.stringVal;
             System.out.println("Here5");
         }
         
         this.remainder = remainder;
-        return first;
+        return res;
     }
 }
