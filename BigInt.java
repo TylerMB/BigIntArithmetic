@@ -379,4 +379,32 @@ public class BigInt {
         this.remainder = remainder;
         return res;
     }
+    
+    
+    public BigInt greatestCommonDivisor(BigInt s){
+        BigInt first;
+        BigInt second;
+        BigInt quotient;
+        BigInt remainder = new BigInt("-1");
+        if(this.isGreaterThan(n)){
+            first = new BigInt(stringVal);
+            second = new BigInt(s.stringVal);
+        } else {
+            first = new BigInt(s.stringVal);
+            second = new BigInt(stringVal);
+        }
+        while(!remainder.isEqualTo("0")){
+            first.divide(second.toString());
+            quotient = new BigInt(first.toStrin    g());
+            remainder = new BigInt(first.getRemainder());
+            
+            if(remainder.isEqualTo("0")){
+                return second.toString();
+            }
+            
+            first = second;
+            second = remainder;
+        }
+        return second;
+    }
 }
