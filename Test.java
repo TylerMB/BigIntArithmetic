@@ -67,6 +67,15 @@ public class Test {
         System.out.println("Should be -1: " + gThan1.divideBy(gThan2));
         System.out.println(gThan5.divideBy(gThan1));
         
+        //Multiplication testing
+        
+        System.out.println("\nMultiplication Testing...\n");
+        System.out.println("Should be 152399025: "  + gThan1.multiplyBy(gThan1));
+        
+        //Greatest Common Diviser
+        
+        System.out.println("\nGreatest Common Divisor Testing...\n");
+        System.out.println("Should be 15: " + gThan1.greatestCommonDivisor( gThan2));
                            
         
     }
