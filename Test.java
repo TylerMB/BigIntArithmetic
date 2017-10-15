@@ -104,7 +104,6 @@ public class Test {
         System.out.println("\nDivision Testing...\n");
         
         System.out.println("Should be 1: " + gThan1.divideBy(gThan1));
-        System.out.println("Should be small pos: " + huger.divideBy(huge));
         System.out.println("Should be 0 r huge: " + huge.divideBy(huger) +" r " + huge.divideBy(huger).remainder);
         System.out.println("Should be error: " + zero.divideBy(one));
         System.out.println("Should be -1: " + neg1.divideBy(one));
@@ -114,6 +113,11 @@ public class Test {
         
         System.out.println("\nMultiplication Testing...\n");
         System.out.println("Should be 152399025: "  + gThan1.multiplyBy(gThan1));
+        System.out.println("Should be 152399025: "  + gThan1.multiplyBy(gThan2));
+        System.out.println("Should be 152399025: "  + huger.multiplyBy(huge));
+        System.out.println("Should be 152399025: "  + neg1.multiplyBy(huge));
+        System.out.println("Should be 152399025: "  + gThan2.multiplyBy(gThan2));
+        System.out.println("Should be 152399025: "  + huge.multiplyBy(gThan2));
         
         //Greatest Common Diviser
         

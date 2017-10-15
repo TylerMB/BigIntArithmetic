@@ -346,22 +346,22 @@ public class BigInt {
         String result = "";
         List<Integer> carryOverArray = new ArrayList<Integer>();
         int large;
-        negative = false;
+        boolean neg = false;
         
         /*Checks for negatives*/
-        if(stringVal.charAt(0) == '-' && s.stringVal.charAt(0) == '-') {
-            negative = false;
+        if(first.negative && second.negative) {
+            neg = false;
             first.stringVal = stringVal.substring(1);
             second.stringVal = s.stringVal.substring(1);
-        }else if(stringVal.charAt(0) == '-'){
-            negative = true;
+        }else if(first.negative){
+            neg = true;
             first.stringVal = stringVal.substring(1);
-        }else if(s.stringVal.charAt(0) == '-'){
-            negative = true;
+        }else if(second.negative){
+            neg = true;
             second.stringVal = s.stringVal.substring(1);
         }
         
-        if (stringVal.length() > s.stringVal.length( )) {
+        if (first.isGreaterThan(second)) {
             large = first.stringVal.length();
         }else{
             large = second.stringVal.length();
@@ -398,8 +398,9 @@ public class BigInt {
             }
             result = result.substring(1);
         }
-        if(negative == true){
+        if(neg){
             result = "-" + result;
+            res.negative = true;
         }
         res.stringVal = result;
         return res;
@@ -413,7 +414,7 @@ public class BigInt {
         BigInt res = new BigInt("0");
         String ans = "";
         String remainder = "";
-        negative = false;
+        boolean neg = false;
         
         
         if(first.isEqualTo(ZERO) || second.isEqualTo(ZERO)){
@@ -421,17 +422,18 @@ public class BigInt {
         }
         
         if(first.negative && second.negative){
-            res.negative = false;
+            neg = false;
             first.stringVal = first.stringVal.substring(1);
             second.stringVal = second.stringVal.substring(1);
             //System.out.println("Here1");
         }else if(first.negative){
-            res.negative = true;
+            neg = true;
             first.stringVal = first.stringVal.substring(1);
-            //System.out.println("Here2");
+            first.negative = false;
         }else if(second.negative){
-            res.negative = true;
+            neg = true;
             second.stringVal = second.stringVal.substring(1);
+            second.negative = false;
             // System.out.println("Here3");
         }
         BigInt temp = new BigInt(first.stringVal);
@@ -447,8 +449,9 @@ public class BigInt {
         }
         remainder = temp.toString();
         first.stringVal = res.toString();
-        if(negative == true){
+        if(neg == true){
             res.stringVal = "-" + res.stringVal;
+            res.negative = true;
             //System.out.println("Here5");
         }
         //  System.out.println(remainder);
