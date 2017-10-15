@@ -9,12 +9,14 @@ public class BigInt {
     public boolean negative;
     
     public BigInt(String input) {
+        
         this.printVal = input;
         this.stringVal = input; // if need to get rid of 0s at beginning do here
         this.number = new ArrayList<Integer>();
         this.remainder = "0";
         convert(input);
     }
+    
     
     public String toString() {
         return stringVal;
@@ -34,9 +36,10 @@ public class BigInt {
     
     
     public void convert(String input){
+        
+        
         if( input.length() == 0){
             this.printVal = "";
-            this.stringVal = ""; // if need to get rid of 0s at beginning do here
             this.number = new ArrayList<Integer>();
             this.remainder = "0";
         } else {
@@ -47,13 +50,13 @@ public class BigInt {
                 this.negative = false;
             }
             if(input.charAt(0) == '0' && input.length() == 1){
-                this.printVal = "0";
+                this.stringVal = "0";
                 
             }else while(input.charAt(0) == '0' && input.length() > 0){
                 input.substring(1);
             }
             for(int i = 0; i < input.length();i++){
-                number.add(Character.getNumericValue(input.charAt(i)));
+                this.number.add(Character.getNumericValue(input.charAt(i)));
             }
         }
     }
@@ -133,12 +136,21 @@ public class BigInt {
     
     
     public BigInt add(BigInt s){
+        BigInt ONE = new BigInt("1");
+        BigInt ZERO = new BigInt("0");
+        
         BigInt first = new BigInt(stringVal);
         BigInt second = new BigInt(s.stringVal);
         ArrayList<String> res = new ArrayList<String>();
         Integer carry = 0;
         int indexOne = first.stringVal.length() - 1;
         int indexTwo = second.stringVal.length() - 1;
+        
+        if(first.isEqualTo(ZERO) && second.isEqualTo(ZERO)){
+            return ZERO;
+        }
+        
+        
         
         //System.out.println(stringVal.charAt(0));
         //System.out.println(s.stringVal.charAt(0));
@@ -182,15 +194,15 @@ public class BigInt {
         int fi = first.number.size()-1;
         int si = second.number.size()-1;
         String newString = "";
-
-       // System.out.println("first: "+first);
-       // System.out.println("second: "+second);
+        
+        // System.out.println("first: "+first);
+        // System.out.println("second: "+second);
         while(si >= 0){
             int newNum = first.number.get(fi) + second.number.get(si);
-         //   System.out.println(newNum);
+            //   System.out.println(newNum);
             if(newNum > 9){
                 newNum -= 10;
-               // System.out.println(newNum);
+                // System.out.println(newNum);
                 if(fi > 0){
                     Integer val = first.number.get(fi-1);
                     val = val +1;
@@ -200,10 +212,10 @@ public class BigInt {
                     fi++;
                 }
             }
-           // System.out.println(first.number);
+            // System.out.println(first.number);
             newString = String.valueOf(newNum) + newString;
-           // System.out.println(newString);
-
+            // System.out.println(newString);
+            
             si--;
             fi--;
         }
@@ -211,7 +223,7 @@ public class BigInt {
             newString = String.valueOf(first.number.get(fi)) + newString;
             fi--;
         }
-
+        
         while(newString.length() > 0 && newString.charAt(0) == '0'){
             newString = newString.substring(1);
         }
@@ -224,20 +236,14 @@ public class BigInt {
     
     
     public BigInt subtract(BigInt s){
+        BigInt ONE = new BigInt("1");
+        BigInt ZERO = new BigInt("0");
         BigInt first = new BigInt(this.stringVal);
         BigInt second = new BigInt(s.stringVal);
         BigInt result;
         
         //System.out.println(first);
         //System.out.println(second);
-        
-        if(first.stringVal.equals("0")){
-            return second;
-        }
-        if(second.stringVal.equals("0")){
-            return first;
-        }
-        
         
         
         if(first.negative && second.negative){
@@ -329,9 +335,11 @@ public class BigInt {
         }
         return null;
     }
-
+    
     
     public BigInt multiplyBy(BigInt s){
+        BigInt ONE = new BigInt("1");
+        BigInt ZERO = new BigInt("0");
         BigInt first = new BigInt(stringVal);
         BigInt second = new BigInt(s.stringVal);
         BigInt res = new BigInt("0");
@@ -398,13 +406,20 @@ public class BigInt {
     }
     
     public BigInt divideBy(BigInt s){
+        BigInt ONE = new BigInt("1");
+        BigInt ZERO = new BigInt("0");
         BigInt first = new BigInt(stringVal);
         BigInt second = new BigInt(s.stringVal);
         BigInt res = new BigInt("0");
         String ans = "";
         String remainder = "";
         negative = false;
-
+        
+        
+        if(first.isEqualTo(ZERO) || second.isEqualTo(ZERO)){
+            return ZERO;
+        }
+        
         if(first.negative && second.negative){
             res.negative = false;
             first.stringVal = first.stringVal.substring(1);
@@ -417,17 +432,16 @@ public class BigInt {
         }else if(second.negative){
             res.negative = true;
             second.stringVal = second.stringVal.substring(1);
-           // System.out.println("Here3");
+            // System.out.println("Here3");
         }
         BigInt temp = new BigInt(first.stringVal);
         //System.out.println("Divisor: " + temp.stringVal);
         while(temp.isGreaterThan(second) || temp.isEqualTo(second)){
-            BigInt one = new BigInt("1");
-           // System.out.println(temp);
+            // System.out.println(temp);
             temp = temp.subtract(second);
             //System.out.println(res.stringVal);
-          //  System.out.println("res: "+ res + " " + one);
-            res = res.add(one);
+            //  System.out.println("res: "+ res + " " + one);
+            res = res.add(ONE);
             //System.out.println(res);
             //System.out.println("Temp: " + temp.stringVal);
         }
@@ -437,19 +451,20 @@ public class BigInt {
             res.stringVal = "-" + res.stringVal;
             //System.out.println("Here5");
         }
-      //  System.out.println(remainder);
-      //  System.out.println(res);
+        //  System.out.println(remainder);
+        //  System.out.println(res);
         res.remainder = remainder;
         return res;
     }
     
     
     public BigInt greatestCommonDivisor(BigInt s){
+        BigInt ONE = new BigInt("1");
+        BigInt ZERO = new BigInt("0");
         BigInt first = new BigInt(stringVal);
         BigInt second = new BigInt(s.stringVal);
         BigInt temp;
         BigInt quotient;
-        BigInt zero = new BigInt("0");
         BigInt remainder = new BigInt("-1");
         
         if(first.isGreaterThan(second)){
@@ -460,14 +475,14 @@ public class BigInt {
             second = new BigInt(stringVal);
         }
         //System.out.println("hello1" + remainder.stringVal);
-        while(!remainder.isEqualTo(zero)){
+        while(!remainder.isEqualTo(ZERO)){
             quotient = first.divideBy(second);
             //System.out.println("hello1" + remainder.stringVal);
             remainder = new BigInt(quotient.getRemainder());
-           // System.out.println(quotient);
-           // System.out.println(quotient.getRemainder());
-
-            if(remainder.isEqualTo(zero)){
+            // System.out.println(quotient);
+            // System.out.println(quotient.getRemainder());
+            
+            if(remainder.isEqualTo(ZERO)){
                 return second;
             }
             //System.out.println("hello" + remainder.stringVal);
