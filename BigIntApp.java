@@ -54,7 +54,7 @@ public class BigIntApp {
                     break;
                 case "/":
                     System.out.println("\n" + readOutput.get(j));
-                    System.out.println("# " + first.divideBy(second));
+                    System.out.println("# " + first.divideBy(second) +" "+first.divideBy(second).remainder);
                     j++;
                     break;
                 case "*":
