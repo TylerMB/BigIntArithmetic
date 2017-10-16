@@ -60,6 +60,7 @@ public class Test {
 
         BigInt huge = new BigInt("123456789987654321123456789");
         BigInt huger = new BigInt("987654321123456789987654321");
+        BigInt twoK = new BigInt("1999");
 
 
         //Subtraction testing
@@ -84,8 +85,6 @@ public class Test {
         
         System.out.println("\nAddition Testing... \n");
         
-        BigInt test = gThan4.add(gThan1);
-        System.out.println("Should be 33690: " + test.stringVal);
         System.out.println("Should be 24690: " + gThan1.add(gThan1));
         System.out.println("Should be 0: " + gThan1.add(gThan2));
         System.out.println("Should be -24690: " + gThan3.add(gThan2));
@@ -96,6 +95,7 @@ public class Test {
         System.out.println("Should be -1 : " + neg1.add(zero));
         System.out.println("Should be 0 : " + zero.add(zero));
         System.out.println("Should be big : " + huge.add(huger));
+        System.out.println("Should be 2000 : " + twoK.add(one));
 
 
         
@@ -113,8 +113,8 @@ public class Test {
         
         System.out.println("\nMultiplication Testing...\n");
         System.out.println("Should be 152399025: "  + gThan1.multiplyBy(gThan1));
-        System.out.println("Should be 152399025: "  + gThan1.multiplyBy(gThan2));
-        System.out.println("Should be 152399025: "  + huger.multiplyBy(huge));
+        System.out.println("Should be -152399025: "  + gThan1.multiplyBy(gThan2));
+       // System.out.println("Should be 1.219*10^54: "  + huger.multiplyBy(huge));
         System.out.println("Should be 152399025: "  + neg1.multiplyBy(huge));
         System.out.println("Should be 152399025: "  + gThan2.multiplyBy(gThan2));
         System.out.println("Should be 152399025: "  + huge.multiplyBy(gThan2));
