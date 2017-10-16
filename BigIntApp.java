@@ -14,7 +14,7 @@ public class BigIntApp {
             if (!readIn.isEmpty() && readIn.charAt(0) != '#') {
                 if (readIn.charAt(0) != ' ') {
                     String[] input = readIn.split(" ");
-                    if (input[0].matches("\\d+") && input.length == 3 && input[2].matches("\\d+")) {
+                    if (input[0].matches("-?\\d+") && input.length == 3 && input[2].matches("-?\\d+")) {
                         readOutput.add(readIn);
                         output.add(input[0]);
                         output.add(input[1]);
