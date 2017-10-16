@@ -116,6 +116,7 @@ public class Test {
         System.out.println("Should be -152399025: "  + gThan1.multiplyBy(gThan2));
        // System.out.println("Should be 1.219*10^54: "  + huger.multiplyBy(huge));
         System.out.println("Should be 152399025: "  + neg1.multiplyBy(huge));
+        System.out.println("Should be 1524077: "  + gThan1.multiplyBy(huge));
         System.out.println("Should be 152399025: "  + gThan2.multiplyBy(gThan2));
         System.out.println("Should be 152399025: "  + huge.multiplyBy(gThan2));
         

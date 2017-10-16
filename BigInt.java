@@ -515,11 +515,13 @@ public class BigInt {
     
     
     public BigInt divideBy(BigInt s){
+        BigInt TWO = new BigInt("2");
         BigInt ONE = new BigInt("1");
         BigInt ZERO = new BigInt("0");
         BigInt first = new BigInt(stringVal);
         BigInt second = new BigInt(s.stringVal);
         BigInt res = new BigInt("0");
+        BigInt counter = new BigInt("1");
         String ans = "";
         String remainder = "";
         boolean neg = false;
@@ -544,27 +546,43 @@ public class BigInt {
             second.negative = false;
             // System.out.println("Here3");
         }
-        BigInt temp = new BigInt(first.stringVal);
+        
+        
+        
+        //BigInt temp = new BigInt(first.stringVal);
         //System.out.println("Divisor: " + temp.stringVal);
-        while(temp.isGreaterThan(second) || temp.isEqualTo(second)){
+        while(first.isGreaterThan(second)){
+            
+            System.out.println(first+ "\t"+second+"\t"+res+"\t"+counter);
+
+            
             // System.out.println(temp);
-            temp = temp.subtract(second);
+            first = first.subtract(second);
+            
             //System.out.println(res.stringVal);
             //  System.out.println("res: "+ res + " " + one);
-            res = res.add(ONE);
+            res = res.add(counter);
+            counter = counter.add(counter);
+            second = second.add(second);
             //System.out.println(res);
             //System.out.println("Temp: " + temp.stringVal);
+
         }
-        remainder = temp.toString();
-        first.stringVal = res.toString();
-        if(neg == true){
-            res.stringVal = "-" + res.stringVal;
-            res.negative = true;
-            //System.out.println("Here5");
+        
+        if(first.isGreaterThan(s)){
+            second = new BigInt(s.stringVal);
         }
-        //  System.out.println(remainder);
-        //  System.out.println(res);
-        res.remainder = remainder;
+        
+        while(first.isGreaterThan(ZERO) && first.isGreaterThan(second) || first.isEqualTo(second)){
+            first = first.subtract(second);
+            res = res.add(ONE);
+        }
+        
+        if( first.isLessThan(second) && first.isGreaterThan(ZERO)){
+            res.remainder = first.stringVal;
+        }
+        System.out.println(first+ "\t"+second+"\t"+res+"\t"+counter);
+
         return res;
     }
     
