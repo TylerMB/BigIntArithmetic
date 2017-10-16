@@ -549,11 +549,12 @@ public class BigInt {
         
         
         
+        
         //BigInt temp = new BigInt(first.stringVal);
         //System.out.println("Divisor: " + temp.stringVal);
         while(first.isGreaterThan(second)){
             
-            System.out.println(first+ "\t"+second+"\t"+res+"\t"+counter);
+           // System.out.println(first+ "\t"+second+"\t"+res+"\t"+counter);
 
             
             // System.out.println(temp);
@@ -571,6 +572,10 @@ public class BigInt {
         
         if(first.isGreaterThan(s)){
             second = new BigInt(s.stringVal);
+            if(second.negative){
+                second.negative = false;
+                second.stringVal = second.stringVal.substring(1);
+            }
         }
         
         while(first.isGreaterThan(ZERO) && first.isGreaterThan(second) || first.isEqualTo(second)){
@@ -581,8 +586,12 @@ public class BigInt {
         if( first.isLessThan(second) && first.isGreaterThan(ZERO)){
             res.remainder = first.stringVal;
         }
-        System.out.println(first+ "\t"+second+"\t"+res+"\t"+counter);
+        //System.out.println(first+ "\t"+second+"\t"+res+"\t"+counter);
 
+        if(neg){
+            res.negative = true;
+            res.stringVal = "-" + res.stringVal;
+        }
         return res;
     }
     
