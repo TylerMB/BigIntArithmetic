@@ -570,7 +570,7 @@ public class BigInt {
 
         }
         
-        if(first.isGreaterThan(s)){
+        if(first.isGreaterThan(s) || first.isEqualTo(s)){
             second = new BigInt(s.stringVal);
             if(second.negative){
                 second.negative = false;
