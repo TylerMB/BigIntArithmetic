@@ -313,9 +313,34 @@ public class BigInt {
             while(newString.charAt(0) == '0'){
                 newString = newString.substring(1);
             }
-            result = new BigInt(newString);
-            //System.out.println(result);
+            String tempString = newString;
+            if (newString.charAt(0) == '-') {
+                tempString = newString.substring(1);
+            }
+            BigInt minusOne = new BigInt("1");
+            BigInt digit;
+            BigInt ans;
+            while (tempString.contains("-1")) {
+                int index = tempString.indexOf('-');
+                tempString = tempString.replace("-1", "9");
+                
+                digit = new BigInt(Character.toString(tempString.charAt(index-1)));
+                ans = digit.subtract(minusOne);
+                
+//                System.out.println(digit.stringVal + " " + minusOne.stringVal);
+                
+                tempString = tempString.substring(0, index-1) + ans.stringVal + tempString.substring(index);
+                
+                newString = tempString;
+//                System.out.println(newString);
+            }
+
+            if (newString.charAt(0) == '0') {
+                newString = newString.substring(1);
+            }
             
+            result = new BigInt(newString);
+        
             return result;
         }
         
