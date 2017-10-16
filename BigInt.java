@@ -440,15 +440,16 @@ public class BigInt {
            // System.out.println(res);
             counter = counter.truncate();
            
-            
+             res = res.add(first.multiplyBy(second.subtract(counter)));
+            return res;
          //   System.out.println("\nres: "+res+"\tresNum: "+res.number);
           //  System.out.println("\ncount: "+counter+"\tcountNum: "+counter.number);
             
-            while(counter.isLessThan(small)){
-                //System.out.println("res: "+res+"\tcount: "+counter);
-                res = res.add(big);
-                counter = counter.add(ONE);
-            }
+//            while(counter.isLessThan(small)){
+//                //System.out.println("res: "+res+"\tcount: "+counter);
+//                res = res.add(big);
+//                counter = counter.add(ONE);
+//            }
           //  System.out.println("\nres: "+res+"\tresNum: "+res.number);
           //  System.out.println("\ncount: "+counter+"\tcountNum: "+counter.number);
 
