@@ -1,4 +1,5 @@
 import java.util.*;
+import java.lang.*;
 
 
 public class BigInt {
@@ -459,23 +460,26 @@ public class BigInt {
 
           //System.out.println(second.stringVal.length() + " dsfgsdfg");
           if (stringVal.length() < second.stringVal.length() && i == numlength) {
-            //System.out.println("here");
             for (int k = stringVal.length()-1; k < stringVal.length(); k--) {
               if (stringVal.charAt(k) != '0') break;
-              //System.out.println("here");
               smallest++;
             }
           }
-          else if (first.stringVal.length() > second.stringVal.length()) {
+          else if (stringVal.length() > second.stringVal.length() && i == numlength) {
             for (int k = second.stringVal.length()-1; k < second.stringVal.length(); k--) {
               if (second.stringVal.charAt(k) != '0') break;
               smallest++;
             }
           }
+          else if (stringVal.length() == second.stringVal.length() && i == numlength) {
+            for (int k = stringVal.length()-1; k < stringVal.length(); k--) {
+              if (stringVal.charAt(k) != '0') break;
+              smallest++;
+            } 
+          }
         }
         
-
-        
+    
         //System.out.println(newString);
         num = new BigInt(newString);
         //System.out.println("i: " + i);
@@ -491,10 +495,66 @@ public class BigInt {
         }
       }
       //System.out.println(subtraction);
-        subtraction += "0";
-        subtractionInt = new BigInt(subtraction);
-        result = result.subtract(subtractionInt);
+      subtraction += "0";
+      subtractionInt = new BigInt(subtraction);
+      result = result.subtract(subtractionInt);
+      
+      char c = result.stringVal.charAt(result.stringVal.length() - 1);
+      
+      int a = 0;
+      int b = 0;
+      ArrayList<Integer> tempList = new ArrayList<Integer>();
+      tempList.add(0);
+      String temp = "";
+      if (stringVal.length() < second.stringVal.length()) temp = stringVal;
+      if (stringVal.length() > second.stringVal.length()) temp = second.stringVal;
+      if (stringVal.length() == second.stringVal.length()) {
+        for (int j = stringVal.length()-1; j > 0; j--) {
+          if (stringVal.charAt(j) == '0') {
+            a = j;
+            break;
+          }
+        }
+        for (int j = second.stringVal.length()-1; j > 0; j--) {
+          if (second.stringVal.charAt(j) == '0') {
+            b = j;
+            break;
+          }
+        }
         
+        
+        if (a > b) {
+          temp = stringVal;
+        } else {
+          temp = second.stringVal;
+        }
+      }
+
+      System.out.println(temp);
+      
+      int remain = 0;
+      if (c != '0') {
+ 
+        for (int j = temp.length()-1; j > 0; j--) {
+          if (temp.charAt(j) == '0') tempList.add(j);
+        }
+        
+
+        if (tempList.size() > 1) {
+          for (int j = tempList.size() -1; j > 0; j--) {
+            System.out.println(j);
+            remain += Math.pow(10.0, (double)tempList.get(j).intValue() + 1.0);
+          }
+        }
+        
+      }
+      
+      System.out.println(tempList);
+      
+      BigInt sub1 = new BigInt(Integer.toString(remain));
+      
+      result = result.subtract(sub1);
+      
       if (negative) {
         result = new BigInt("-" + result.stringVal);
       }
