@@ -376,139 +376,139 @@ public class BigInt {
     }
     
     
-    public BigInt multiplyBy(BigInt s){
-        BigInt ZERO = new BigInt("0");
-        BigInt ONE = new BigInt("1");
-        BigInt TWO = new BigInt("2");
-        BigInt first = new BigInt(stringVal);
-        BigInt second = new BigInt(s.stringVal);
-        BigInt res;
-        BigInt small;
-        BigInt big;
-        BigInt counter = new BigInt("1");
-        //System.out.println(first+"\t"+second);
-
-        boolean neg = false;
+    public BigInt multiplyBy(BigInt s) {
+      BigInt first = new BigInt(stringVal);
+      BigInt second = new BigInt(s.stringVal);
+      boolean negative = false;
+      
+      if (first.negative && !second.negative) {
+        negative = true;
+      } else if (!first.negative && second.negative) {
+        negative = true;
+      }
+      
+      BigInt result = new BigInt("0");
+      
+      if (first.stringVal.charAt(0) == '-') {
+        first = new BigInt(first.stringVal.substring(1));
+        //System.out.println(first);
+      }
+      
+      if (second.stringVal.charAt(0) == '-') {
+        second = new BigInt(second.stringVal.substring(1));
+        //System.out.println(second);
+      }
+      
+      ArrayList<Integer> one = first.number;
+      ArrayList<Integer> two = second.number;
+//      System.out.println(one);
+//      System.out.println(one);
+      int numlength = 0;
+      
+      if (one.size()<two.size()) {
+        //System.out.println("here");
+        numlength = one.size();
+        one = two;
+        two = first.number;
+        first = second;
         
-        /*Checks for negatives*/
-        if(first.negative && second.negative) {
-            neg = false;
-            first.stringVal = stringVal.substring(1);
-            first.negative = false;
-            second.stringVal = s.stringVal.substring(1);
-            second.negative = false;
-        }else if(first.negative){
-            neg = true;
-            first.stringVal = stringVal.substring(1);
-            first.negative = false;
-        }else if(second.negative){
-            neg = true;
-            second.stringVal = s.stringVal.substring(1);
-            second.negative = false;
-        }
+      } else {
         
-        if(first.isEqualTo(ZERO) || second.isEqualTo(ZERO)){
-            return ZERO;
+        //System.out.println("here1");
+        numlength = two.size();
+      }
+      
+      int pad = 0;
+      for (int i=numlength; i>0; i--) {
+        //System.out.println(pad);
+        int times = two.get(i - 1);
+        BigInt num = new BigInt("0");
+        String zero = "";
+        for (int j=0; j<pad; j++) {
+          System.out.println("here");
+          zero += "0";
         }
-        if(first.isEqualTo(TWO)){
-            return second.add(second);
+        System.out.println("here1");
+        //Sysem.out.println(zero);
+        for (int j=0; j<times; j++) {
+          num = num.add(first);
+          
         }
-        if(second.isEqualTo(TWO)){
-            return first.add(first);
-        }
+        System.out.println("out");
+        //System.out.println(num);
+        String newString = num.stringVal + zero;
         
-        if (first.isGreaterThan(second)) {
-            res = new BigInt(first.stringVal);
-            big = new BigInt(first.stringVal);
-            small = new BigInt(second.stringVal);
-        }else{
-            res = new BigInt(second.stringVal);
-            big = new BigInt(second.stringVal);
-            small  = new BigInt(first.stringVal);
-        }
-        
-        while(counter.isLessThan(small)){
-           // System.out.println("res: "+res+"\tcount: "+counter);
-            res = res.add(res);
-            counter = counter.multiplyBy(TWO);
-        }
-       // System.out.println("\nres: "+res+"\tresNum: "+res.number);
-       // System.out.println("\ncount: "+counter+"\tcountNum: "+counter.number);
-        if(counter.isGreaterThan(small)){
-            //System.out.println(res);
-            res = res.truncate();
-           // System.out.println(res);
-            counter = counter.truncate();
-           
-             res = res.add(first.multiplyBy(second.subtract(counter)));
-            return res;
-         //   System.out.println("\nres: "+res+"\tresNum: "+res.number);
-          //  System.out.println("\ncount: "+counter+"\tcountNum: "+counter.number);
-            
-//            while(counter.isLessThan(small)){
-//                //System.out.println("res: "+res+"\tcount: "+counter);
-//                res = res.add(big);
-//                counter = counter.add(ONE);
-//            }
-          //  System.out.println("\nres: "+res+"\tresNum: "+res.number);
-          //  System.out.println("\ncount: "+counter+"\tcountNum: "+counter.number);
-
+        int check = 0;
+        for (int j = 0; j < newString.length(); j++) {
+          if (newString.charAt(j) == '0') {
+            check++;
+          }
         }
         
-        if(counter.isEqualTo(small)){
-            if(neg){
-                res.negative = true;
-                res.stringVal = "-" + res.stringVal;
-            }
-            return res;
+        if (check == newString.length()) {
+          newString = "1" + newString;
         }
-        return res;
+        
+        System.out.println(newString);
+        num = new BigInt(newString);
+        System.out.println("i: " + i);
+        result = result.add(num);
+        pad++;
+      }
+      
+      if (negative) {
+        result = new BigInt("-" + result.stringVal);
+      }
+      
+      return result;
     }
     
+    
+    
     public BigInt truncate(){
-        BigInt first = new BigInt(stringVal);
-        BigInt result;
-        boolean neg = false;
+      BigInt first = new BigInt(stringVal);
+      BigInt result;
+      boolean neg = false;
+      
+      if(negative){
+        neg = true;
+        first.stringVal = first.stringVal.substring(1);
+      }
+      
+      result = new BigInt(first.stringVal);
+      
+      for(int i = result.number.size()-1; i >= 0; i--){
         
-        if(negative){
-            neg = true;
-            first.stringVal = first.stringVal.substring(1);
+        int newNum = first.number.get(i).intValue();
+        if(newNum % 2 != 0 && i != (result.number.size()-1)){
+          result.number.set(i+1,result.number.get(i+1)+5);
         }
+        newNum /= 2;
+        result.number.set(i,newNum);
         
-        result = new BigInt(first.stringVal);
-        
-        for(int i = result.number.size()-1; i >= 0; i--){
-            
-            int newNum = first.number.get(i).intValue();
-            if(newNum % 2 != 0 && i != (result.number.size()-1)){
-                result.number.set(i+1,result.number.get(i+1)+5);
-            }
-            newNum /= 2;
-            result.number.set(i,newNum);
-            
-        }
-        result.stringVal = "";
-        if(neg){
-            result.negative = true;
-            result.stringVal = "-";
-        } else {
-            result.negative = false;
-        }
-        
-        
-        
-        for(Integer num : result.number){
-            result.stringVal = result.stringVal + String.valueOf(num);
-        }
-        
-        while(result.stringVal.length() > 0 && result.stringVal.charAt(0) == '0'){
-            result.stringVal = result.stringVal.substring(1);
-            result.number.remove(0);
-        }
-        
-        
-        return result;
-        
+      }
+      result.stringVal = "";
+      if(neg){
+        result.negative = true;
+        result.stringVal = "-";
+      } else {
+        result.negative = false;
+      }
+      
+      
+      
+      for(Integer num : result.number){
+        result.stringVal = result.stringVal + String.valueOf(num);
+      }
+      
+      while(result.stringVal.length() > 0 && result.stringVal.charAt(0) == '0'){
+        result.stringVal = result.stringVal.substring(1);
+        result.number.remove(0);
+      }
+      
+      
+      return result;
+      
     }
     
     
@@ -516,118 +516,118 @@ public class BigInt {
     
     
     public BigInt divideBy(BigInt s){
-        BigInt TWO = new BigInt("2");
-        BigInt ONE = new BigInt("1");
-        BigInt ZERO = new BigInt("0");
-        BigInt first = new BigInt(stringVal);
-        BigInt second = new BigInt(s.stringVal);
-        BigInt res = new BigInt("0");
-        BigInt counter = new BigInt("1");
-        String ans = "";
-        String remainder = "";
-        boolean neg = false;
+      BigInt TWO = new BigInt("2");
+      BigInt ONE = new BigInt("1");
+      BigInt ZERO = new BigInt("0");
+      BigInt first = new BigInt(stringVal);
+      BigInt second = new BigInt(s.stringVal);
+      BigInt res = new BigInt("0");
+      BigInt counter = new BigInt("1");
+      String ans = "";
+      String remainder = "";
+      boolean neg = false;
+      
+      
+      if(first.isEqualTo(ZERO) || second.isEqualTo(ZERO)){
+        return ZERO;
+      }
+      
+      if(first.negative && second.negative){
+        neg = false;
+        first.stringVal = first.stringVal.substring(1);
+        second.stringVal = second.stringVal.substring(1);
+        //System.out.println("Here1");
+      }else if(first.negative){
+        neg = true;
+        first.stringVal = first.stringVal.substring(1);
+        first.negative = false;
+      }else if(second.negative){
+        neg = true;
+        second.stringVal = second.stringVal.substring(1);
+        second.negative = false;
+        // System.out.println("Here3");
+      }
+      
+      
+      
+      
+      //BigInt temp = new BigInt(first.stringVal);
+      //System.out.println("Divisor: " + temp.stringVal);
+      while(first.isGreaterThan(second)){
+        
+        // System.out.println(first+ "\t"+second+"\t"+res+"\t"+counter);
         
         
-        if(first.isEqualTo(ZERO) || second.isEqualTo(ZERO)){
-            return ZERO;
+        // System.out.println(temp);
+        first = first.subtract(second);
+        
+        //System.out.println(res.stringVal);
+        //  System.out.println("res: "+ res + " " + one);
+        res = res.add(counter);
+        counter = counter.add(counter);
+        second = second.add(second);
+        //System.out.println(res);
+        //System.out.println("Temp: " + temp.stringVal);
+        
+      }
+      
+      if(first.isGreaterThan(s) || first.isEqualTo(s)){
+        second = new BigInt(s.stringVal);
+        if(second.negative){
+          second.negative = false;
+          second.stringVal = second.stringVal.substring(1);
         }
-        
-        if(first.negative && second.negative){
-            neg = false;
-            first.stringVal = first.stringVal.substring(1);
-            second.stringVal = second.stringVal.substring(1);
-            //System.out.println("Here1");
-        }else if(first.negative){
-            neg = true;
-            first.stringVal = first.stringVal.substring(1);
-            first.negative = false;
-        }else if(second.negative){
-            neg = true;
-            second.stringVal = second.stringVal.substring(1);
-            second.negative = false;
-            // System.out.println("Here3");
-        }
-        
-        
-        
-        
-        //BigInt temp = new BigInt(first.stringVal);
-        //System.out.println("Divisor: " + temp.stringVal);
-        while(first.isGreaterThan(second)){
-            
-           // System.out.println(first+ "\t"+second+"\t"+res+"\t"+counter);
-
-            
-            // System.out.println(temp);
-            first = first.subtract(second);
-            
-            //System.out.println(res.stringVal);
-            //  System.out.println("res: "+ res + " " + one);
-            res = res.add(counter);
-            counter = counter.add(counter);
-            second = second.add(second);
-            //System.out.println(res);
-            //System.out.println("Temp: " + temp.stringVal);
-
-        }
-        
-        if(first.isGreaterThan(s) || first.isEqualTo(s)){
-            second = new BigInt(s.stringVal);
-            if(second.negative){
-                second.negative = false;
-                second.stringVal = second.stringVal.substring(1);
-            }
-        }
-        
-        while(first.isGreaterThan(ZERO) && first.isGreaterThan(second) || first.isEqualTo(second)){
-            first = first.subtract(second);
-            res = res.add(ONE);
-        }
-        
-        if( first.isLessThan(second) && first.isGreaterThan(ZERO)){
-            res.remainder = first.stringVal;
-        }
-        //System.out.println(first+ "\t"+second+"\t"+res+"\t"+counter);
-
-        if(neg){
-            res.negative = true;
-            res.stringVal = "-" + res.stringVal;
-        }
-        return res;
+      }
+      
+      while(first.isGreaterThan(ZERO) && first.isGreaterThan(second) || first.isEqualTo(second)){
+        first = first.subtract(second);
+        res = res.add(ONE);
+      }
+      
+      if( first.isLessThan(second) && first.isGreaterThan(ZERO)){
+        res.remainder = first.stringVal;
+      }
+      //System.out.println(first+ "\t"+second+"\t"+res+"\t"+counter);
+      
+      if(neg){
+        res.negative = true;
+        res.stringVal = "-" + res.stringVal;
+      }
+      return res;
     }
     
     
     public BigInt greatestCommonDivisor(BigInt s){
-        BigInt ONE = new BigInt("1");
-        BigInt ZERO = new BigInt("0");
-        BigInt first = new BigInt(stringVal);
-        BigInt second = new BigInt(s.stringVal);
-        BigInt temp;
-        BigInt quotient;
-        BigInt remainder = new BigInt("-1");
-        
-        if(first.isGreaterThan(second)){
-            first = new BigInt(stringVal);
-            second = new BigInt(s.stringVal);
-        } else {
-            first = new BigInt(s.stringVal);
-            second = new BigInt(stringVal);
-        }
+      BigInt ONE = new BigInt("1");
+      BigInt ZERO = new BigInt("0");
+      BigInt first = new BigInt(stringVal);
+      BigInt second = new BigInt(s.stringVal);
+      BigInt temp;
+      BigInt quotient;
+      BigInt remainder = new BigInt("-1");
+      
+      if(first.isGreaterThan(second)){
+        first = new BigInt(stringVal);
+        second = new BigInt(s.stringVal);
+      } else {
+        first = new BigInt(s.stringVal);
+        second = new BigInt(stringVal);
+      }
+      //System.out.println("hello1" + remainder.stringVal);
+      while(!remainder.isEqualTo(ZERO)){
+        quotient = first.divideBy(second);
         //System.out.println("hello1" + remainder.stringVal);
-        while(!remainder.isEqualTo(ZERO)){
-            quotient = first.divideBy(second);
-            //System.out.println("hello1" + remainder.stringVal);
-            remainder = new BigInt(quotient.getRemainder());
-            // System.out.println(quotient);
-            // System.out.println(quotient.getRemainder());
-            
-            if(remainder.isEqualTo(ZERO)){
-                return second;
-            }
-            //System.out.println("hello" + remainder.stringVal);
-            first = second;
-            second = remainder;
+        remainder = new BigInt(quotient.getRemainder());
+        // System.out.println(quotient);
+        // System.out.println(quotient.getRemainder());
+        
+        if(remainder.isEqualTo(ZERO)){
+          return second;
         }
-        return second;
+        //System.out.println("hello" + remainder.stringVal);
+        first = second;
+        second = remainder;
+      }
+      return second;
     }
 }
