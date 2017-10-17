@@ -384,6 +384,8 @@ public class BigInt {
       String subtraction = "";
       boolean negative = false;
       int smallest = 0;
+      int temp1 = 0;
+      int temp2 = 0;
       
       
       if (first.negative && !second.negative) {
@@ -474,27 +476,36 @@ public class BigInt {
           else if (stringVal.length() == second.stringVal.length() && i == numlength) {
             for (int k = stringVal.length()-1; k < stringVal.length(); k--) {
               if (stringVal.charAt(k) != '0') break;
-              smallest++;
+              temp1++;
+            } 
+            for (int k = second.stringVal.length()-1; k < second.stringVal.length(); k--) {
+              if (second.stringVal.charAt(k) != '0') break;
+              temp2++;
             } 
           }
         }
         
-    
+
         //System.out.println(newString);
         num = new BigInt(newString);
         //System.out.println("i: " + i);
         result = result.add(num);
         pad++;
         
+        
         if (check != 0 && i == 1) {
-          //System.out.println(smallest);
+          if (temp1 > temp2) {
+            smallest = temp1;
+          } else {
+            smallest = temp2; 
+          }
           for (int j = 0; j < smallest; j++) {
-            //System.out.println("inin");
+//            System.out.println("inin");
             subtraction += "1";
           }
         }
       }
-      //System.out.println(subtraction);
+      System.out.println(result.toString());
       subtraction += "0";
       subtractionInt = new BigInt(subtraction);
       result = result.subtract(subtractionInt);
@@ -530,7 +541,7 @@ public class BigInt {
         }
       }
 
-      System.out.println(temp);
+//      System.out.println(temp);
       
       int remain = 0;
       if (c != '0') {
@@ -542,14 +553,14 @@ public class BigInt {
 
         if (tempList.size() > 1) {
           for (int j = tempList.size() -1; j > 0; j--) {
-            System.out.println(j);
+//            System.out.println(j);
             remain += Math.pow(10.0, (double)tempList.get(j).intValue() + 1.0);
           }
         }
         
       }
       
-      System.out.println(tempList);
+      //System.out.println(tempList);
       
       BigInt sub1 = new BigInt(Integer.toString(remain));
       
