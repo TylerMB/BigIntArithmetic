@@ -379,7 +379,11 @@ public class BigInt {
     public BigInt multiplyBy(BigInt s) {
       BigInt first = new BigInt(stringVal);
       BigInt second = new BigInt(s.stringVal);
+      BigInt subtractionInt;
+      String subtraction = "";
       boolean negative = false;
+      int smallest = 0;
+      
       
       if (first.negative && !second.negative) {
         negative = true;
@@ -419,43 +423,78 @@ public class BigInt {
       }
       
       int pad = 0;
+      
+      
       for (int i=numlength; i>0; i--) {
         //System.out.println(pad);
         int times = two.get(i - 1);
         BigInt num = new BigInt("0");
         String zero = "";
         for (int j=0; j<pad; j++) {
-          System.out.println("here");
+          //System.out.println("here");
           zero += "0";
         }
-        System.out.println("here1");
+        //System.out.println("here1");
         //Sysem.out.println(zero);
         for (int j=0; j<times; j++) {
           num = num.add(first);
           
         }
-        System.out.println("out");
+        //System.out.println("out");
         //System.out.println(num);
         String newString = num.stringVal + zero;
         
         int check = 0;
+
         for (int j = 0; j < newString.length(); j++) {
           if (newString.charAt(j) == '0') {
             check++;
           }
         }
         
+        boolean through = false;
         if (check == newString.length()) {
           newString = "1" + newString;
+          through = true;
+
+          //System.out.println(second.stringVal.length() + " dsfgsdfg");
+          if (stringVal.length() < second.stringVal.length() && i == numlength) {
+            //System.out.println("here");
+            for (int k = stringVal.length()-1; k < stringVal.length(); k--) {
+              if (stringVal.charAt(k) != '0') break;
+              //System.out.println("here");
+              smallest++;
+            }
+          }
+          else if (first.stringVal.length() > second.stringVal.length()) {
+            for (int k = second.stringVal.length()-1; k < second.stringVal.length(); k--) {
+              if (second.stringVal.charAt(k) != '0') break;
+              smallest++;
+            }
+          }
         }
         
-        System.out.println(newString);
+
+        
+        //System.out.println(newString);
         num = new BigInt(newString);
-        System.out.println("i: " + i);
+        //System.out.println("i: " + i);
         result = result.add(num);
         pad++;
+        
+        if (check != 0 && i == 1) {
+          //System.out.println(smallest);
+          for (int j = 0; j < smallest; j++) {
+            //System.out.println("inin");
+            subtraction += "1";
+          }
+        }
       }
-      
+      //System.out.println(subtraction);
+        subtraction += "0";
+        subtractionInt = new BigInt(subtraction);
+        result = result.subtract(subtractionInt);
+        
       if (negative) {
         result = new BigInt("-" + result.stringVal);
       }
