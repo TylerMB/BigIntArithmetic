@@ -15,7 +15,7 @@ public class BigInt {
         this.stringVal = input; // if need to get rid of 0s at beginning do here
         this.number = new ArrayList<Integer>();
         this.remainder = "0";
-        convert(input);
+        //convert(input);
     }
     
     
@@ -136,116 +136,74 @@ public class BigInt {
     }
     
     
-    public BigInt add(BigInt s){
-        BigInt ONE = new BigInt("1");
-        BigInt ZERO = new BigInt("0");
-        
-        BigInt first = new BigInt(stringVal);
-        BigInt second = new BigInt(s.stringVal);
-        ArrayList<String> res = new ArrayList<String>();
-        Integer carry = 0;
-        int indexOne = first.stringVal.length() - 1;
-        int indexTwo = second.stringVal.length() - 1;
-        
-        if(first.isEqualTo(ZERO) && second.isEqualTo(ZERO)){
-            return ZERO;
-        }
-        
-        
-        
-        //System.out.println(stringVal.charAt(0));
-        //System.out.println(s.stringVal.charAt(0));
-        
-        // Deals with negative values
-        if (first.negative && !second.negative) {
-            //System.out.println("h1\n");
-            first.stringVal = first.stringVal.substring(1);
-            first.negative = false;
-            //System.out.println(first.stringVal);
-            BigInt r1 = second.subtract(first);
-            return r1;
-        }
-        if (!first.negative && second.negative) {
-            //System.out.println("h2\n");
-            second.stringVal = second.stringVal.substring(1);
-            second.negative = false;
-            //System.out.println(second.stringVal);
-            BigInt r2 = first.subtract(second);
-            return r2;
-        }
-        if (first.negative && second.negative) {
-            //System.out.println("h3\n");
-            first.stringVal = first.stringVal.substring(1);
-            second.stringVal = second.stringVal.substring(1);
-            first.negative = false;
-            second.negative = false;
-            //System.out.println(first.stringVal);
-            //second.stringVal = s.stringVal.substring(1);
-            //System.out.println(second.stringVal);
-            BigInt r3 = first.add(second);
-            r3.negative = true;
-            r3.stringVal = "-" + r3.stringVal;
-            return r3;
-        }
-        
-        if(first.isLessThan(second)){
-            return second.add(first);
-        }
-        
-        int fi = first.number.size()-1;
-        int si = second.number.size()-1;
-        ArrayList<Integer> newNumber = new ArrayList<Integer>();
-        
-        // System.out.println("first: "+first);
-        // System.out.println("second: "+second);
-        while(si >= 0){
-            //System.out.println(newNumber);
-            int newNum = first.number.get(fi) + second.number.get(si);
-            newNumber.add(0,newNum);
-            
-            si--;
-            fi--;
-        }
-        while(fi > si){
-            newNumber.add(0,first.number.get(fi));
-            fi--;
-        }
-        
-       // System.out.println(newNumber);
-        
-        
-        for(int i = newNumber.size()-1;i>=0;i--){
-           // System.out.println(newNumber);
-            
-            int val = newNumber.get(i).intValue();
-            if(val > 9){
-                val -= 10;
-                newNumber.set(i,val);
-                if(i == 0){
-                    newNumber.add(0,1);
-                } else {
-                    newNumber.set(i-1, newNumber.get(i-1)+1);
-                }
-                i++;
-            }
-        }
-        
-
-        
-        
-        
-        String newString = "";
-        
-        for(Integer num : newNumber){
-            newString = newString + num.toString();
-        }
-        BigInt result = new BigInt(newString);
-        //System.out.println(result);
-        
-        
-       // System.out.println(result.number);
-        return result;
+public BigInt add(BigInt s) {
+  BigInt first = new BigInt(stringVal);
+  BigInt second = s;
+  BigInt result;
+  
+    if (!negative && second.stringVal.charAt(0) == '-') {
+      result = new BigInt(second.toString().substring(1, second.stringVal.length()));
+      return subtract(result);
     }
+    if (negative && second.toString().charAt(0) != '-') {
+      BigInt temp = new BigInt(stringVal);
+      
+      if (temp.isLessThan(second)) {
+        result = second.subtract(temp);
+        return result;
+        
+      } else if (temp.isGreaterThan(second)) {
+        result = new BigInt("-" + temp.subtract(second));
+        return result;
+      } else {
+        result = new BigInt("0");
+        return result;
+      }
+    }
+    
+    if (negative && second.stringVal.charAt(0) == '-') {
+      BigInt temp = new BigInt(stringVal);
+      BigInt temp1 = new BigInt(second.toString().substring(1,second.stringVal.length()));
+      result = new BigInt("-" + temp.add(temp1).stringVal);
+      return result;
+    }
+    String oStr;
+    if (second.toString().charAt(0) == '-') {
+      oStr = second.stringVal.substring(1, second.stringVal.length());;
+    } else {
+      oStr = second.stringVal;
+    }
+    String longest;
+    String shortest;
+    if (stringVal.length() != oStr.length()) {
+      longest = stringVal.length() > oStr.length() ? stringVal : oStr;
+      shortest = stringVal.length() < oStr.length() ? stringVal : oStr;
+    } else {
+      longest = stringVal;
+      shortest = oStr;
+    }
+    int carry = 0;
+    String newNum = "";
+    int diff = longest.length()-shortest.length();
+    for (int i = longest.length()-1; i >= 0; i--) {
+      if (i-diff >= 0) {
+        int num = Integer.parseInt(String.valueOf(longest.charAt(i))) + 
+          Integer.parseInt(String.valueOf(shortest.charAt(i-diff)));
+        num += carry;
+        carry = num / 10;
+        newNum = num % 10 + newNum;
+      } else {
+        int num = Integer.parseInt(String.valueOf(longest.charAt(i)));
+        num += carry;
+        carry = num / 10;
+        newNum = num % 10 + newNum;
+      }
+    }
+    if (carry != 0) {
+      newNum = carry + newNum;
+    }
+    return new BigInt(newNum);
+  }
     
     
     
@@ -377,204 +335,45 @@ public class BigInt {
     }
     
     
-    public BigInt multiplyBy(BigInt s) {
-      BigInt first = new BigInt(stringVal);
-      BigInt second = new BigInt(s.stringVal);
-      BigInt subtractionInt;
-      String subtraction = "";
-      boolean neg = false;
-      int smallest = 0;
-      int temp1 = 0;
-      int temp2 = 0;
-      
-      
-      if (first.negative && !second.negative) {
-        neg = true;
-      } else if (!first.negative && second.negative) {
-        neg = true;
-          
-      }
-      
-      BigInt result = new BigInt("0");
-      
-      if (first.stringVal.charAt(0) == '-') {
-          return second.multiplyBy(first);
-      }
-      
-      if (second.stringVal.charAt(0) == '-') {
-        second.stringVal = second.stringVal.substring(1);
-          second.negative = false;
-        //System.out.println(second);
-          
-      }
-      
-      ArrayList<Integer> one = first.number;
-      ArrayList<Integer> two = second.number;
-//      System.out.println(one);
-//      System.out.println(one);
-      int numlength = 0;
-      
-      if (one.size()<two.size()) {
-        //System.out.println("here");
-        numlength = one.size();
-        one = two;
-        two = first.number;
-        first = second;
-        
-      } else {
-        
-        //System.out.println("here1");
-        numlength = two.size();
-      }
-      
-      int pad = 0;
-      
-      
-      for (int i=numlength; i>0; i--) {
-        //System.out.println(pad);
-        int times = two.get(i - 1);
-        BigInt num = new BigInt("0");
-        String zero = "";
-        for (int j=0; j<pad; j++) {
-          //System.out.println("here");
-          zero += "0";
-        }
-        //System.out.println("here1");
-        //Sysem.out.println(zero);
-        for (int j=0; j<times; j++) {
-          num = num.add(first);
-          
-        }
-        //System.out.println("out");
-        //System.out.println(num);
-        String newString = num.stringVal + zero;
-        
-        int check = 0;
-
-        for (int j = 0; j < newString.length(); j++) {
-          if (newString.charAt(j) == '0') {
-            check++;
-          }
-        }
-        
-        boolean through = false;
-        if (check == newString.length()) {
-          newString = "1" + newString;
-          through = true;
-
-          //System.out.println(second.stringVal.length() + " dsfgsdfg");
-          if (stringVal.length() < second.stringVal.length() && i == numlength) {
-            for (int k = stringVal.length()-1; k < stringVal.length(); k--) {
-              if (stringVal.charAt(k) != '0') break;
-              smallest++;
-            }
-          }
-          else if (stringVal.length() > second.stringVal.length() && i == numlength) {
-            for (int k = second.stringVal.length()-1; k < second.stringVal.length(); k--) {
-              if (second.stringVal.charAt(k) != '0') break;
-              smallest++;
-            }
-          }
-          else if (stringVal.length() == second.stringVal.length() && i == numlength) {
-            for (int k = stringVal.length()-1; k < stringVal.length(); k--) {
-              if (stringVal.charAt(k) != '0') break;
-              temp1++;
-            } 
-            for (int k = second.stringVal.length()-1; k < second.stringVal.length(); k--) {
-              if (second.stringVal.charAt(k) != '0') break;
-              temp2++;
-            } 
-          }
-        }
-        
-
-        //System.out.println(newString);
-        num = new BigInt(newString);
-        //System.out.println("i: " + i);
-        result = result.add(num);
-        pad++;
-        
-        
-        if (check != 0 && i == 1) {
-          if (temp1 > temp2) {
-            smallest = temp1;
-          } else {
-            smallest = temp2; 
-          }
-          for (int j = 0; j < smallest; j++) {
-//            System.out.println("inin");
-            subtraction += "1";
-          }
-        }
-      }
-      System.out.println(result.toString());
-      subtraction += "0";
-      subtractionInt = new BigInt(subtraction);
-      result = result.subtract(subtractionInt);
-      
-      char c = result.stringVal.charAt(result.stringVal.length() - 1);
-      
-      int a = 0;
-      int b = 0;
-      ArrayList<Integer> tempList = new ArrayList<Integer>();
-      tempList.add(0);
-      String temp = "";
-      if (stringVal.length() < second.stringVal.length()) temp = stringVal;
-      if (stringVal.length() > second.stringVal.length()) temp = second.stringVal;
-      if (stringVal.length() == second.stringVal.length()) {
-        for (int j = stringVal.length()-1; j > 0; j--) {
-          if (stringVal.charAt(j) == '0') {
-            a = j;
-            break;
-          }
-        }
-        for (int j = second.stringVal.length()-1; j > 0; j--) {
-          if (second.stringVal.charAt(j) == '0') {
-            b = j;
-            break;
-          }
-        }
-        
-        
-        if (a > b) {
-          temp = stringVal;
-        } else {
-          temp = second.stringVal;
-        }
-      }
-
-//      System.out.println(temp);
-      
-      int remain = 0;
-      if (c != '0') {
- 
-        for (int j = temp.length()-1; j > 0; j--) {
-          if (temp.charAt(j) == '0') tempList.add(j);
-        }
-        
-
-        if (tempList.size() > 1) {
-          for (int j = tempList.size() -1; j > 0; j--) {
-//            System.out.println(j);
-            remain += Math.pow(10.0, (double)tempList.get(j).intValue() + 1.0);
-          }
-        }
-        
-      }
-      
-      //System.out.println(tempList);
-      
-      BigInt sub1 = new BigInt(Integer.toString(remain));
-      
-      result = result.subtract(sub1);
-      
-      if (neg) {
-        result .stringVal = "-" + result.stringVal;
-          result.negative = true;
-      }
-      
-      return result;
+ public BigInt multiplyBy(BigInt o) {
+    boolean neg = false;
+    String str;
+    if (toString().charAt(0) == '-') {
+      str = toString().substring(1, toString().length());
+      neg = true;
+    } else {
+      str = toString();
     }
+    String oStr;
+    if (o.toString().charAt(0) == '-') {
+      oStr = o.toString().substring(1, o.toString().length());
+      neg = !neg;
+    } else {
+      oStr = o.toString();
+    }
+    BigInt total = new BigInt("0");
+    
+    for (int i = 0; i < str.length(); i++) {
+      int carry = 0;
+      String value = "";
+      for (int t = oStr.length()-1; t >= 0; t--) {
+        int res = Integer.parseInt(String.valueOf(str.charAt(i))) * 
+          Integer.parseInt(String.valueOf(oStr.charAt(t)));
+        res += carry;
+        carry = res / 10;
+        res = res % 10;
+        value = res + value;
+      }
+      value = carry + value;
+      for (int z = str.length()-i-2; z >= 0; z--) {
+        value += "0";
+      }
+      total = total.add(new BigInt(value));
+    }
+    total = new BigInt((neg ? "-" : "") + total.toString());
+    return total; 
+  }
+  
     
     
     
