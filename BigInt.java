@@ -382,28 +382,30 @@ public class BigInt {
       BigInt second = new BigInt(s.stringVal);
       BigInt subtractionInt;
       String subtraction = "";
-      boolean negative = false;
+      boolean neg = false;
       int smallest = 0;
       int temp1 = 0;
       int temp2 = 0;
       
       
       if (first.negative && !second.negative) {
-        negative = true;
+        neg = true;
       } else if (!first.negative && second.negative) {
-        negative = true;
+        neg = true;
+          
       }
       
       BigInt result = new BigInt("0");
       
       if (first.stringVal.charAt(0) == '-') {
-        first = new BigInt(first.stringVal.substring(1));
-        //System.out.println(first);
+          return second.multiplyBy(first);
       }
       
       if (second.stringVal.charAt(0) == '-') {
-        second = new BigInt(second.stringVal.substring(1));
+        second.stringVal = second.stringVal.substring(1);
+          second.negative = false;
         //System.out.println(second);
+          
       }
       
       ArrayList<Integer> one = first.number;
@@ -566,8 +568,9 @@ public class BigInt {
       
       result = result.subtract(sub1);
       
-      if (negative) {
-        result = new BigInt("-" + result.stringVal);
+      if (neg) {
+        result .stringVal = "-" + result.stringVal;
+          result.negative = true;
       }
       
       return result;
